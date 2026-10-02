@@ -1,0 +1,311 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: #f3f7fb;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-x: hidden;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 50, 120, 0.04);
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.logo-icon {
+    background: #0056b3;
+    color: #ffffff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.logo span {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #0b3954;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #1a365d;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding-bottom: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a.active {
+    color: #0066cc;
+    border-bottom: 3px solid #0066cc;
+}
+
+.nav-links a:hover {
+    color: #0066cc;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    flex: 1;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    padding: 2.5rem 4rem;
+}
+
+/* Background image handling with smooth gradient fade */
+.hero-bg-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 65%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #f3f7fb 15%, rgba(243, 247, 251, 0.85) 45%, rgba(243, 247, 251, 0.1) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+}
+
+.hero-title {
+    font-size: 3.6rem;
+    font-weight: 800;
+    color: #0c3668;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.hero-address {
+    font-size: 1.05rem;
+    color: #1e3a5f;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.hero-address i {
+    color: #0056b3;
+    font-size: 1.2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 2.8rem;
+}
+
+.btn {
+    padding: 0.85rem 1.6rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.25s ease;
+}
+
+.btn-primary {
+    background: #0066cc;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+.btn-primary:hover {
+    background: #0052a3;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: #ffffff;
+    color: #0066cc;
+    border: 1.5px solid #0066cc;
+}
+
+.btn-outline:hover {
+    background: #eef6ff;
+    transform: translateY(-2px);
+}
+
+/* Feature Cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0, 45, 100, 0.05);
+    border: 1px solid #e2edf8;
+    transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+}
+
+.icon-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    margin: 0 auto 0.7rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+}
+
+.icon-blue { background: #e0f2fe; color: #0284c7; }
+.icon-green { background: #dcfce7; color: #16a34a; }
+.icon-purple { background: #f3e8ff; color: #9333ea; }
+.icon-orange { background: #fef3c7; color: #d97706; }
+
+.feature-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f2744;
+    margin-bottom: 0.2rem;
+}
+
+.feature-card p {
+    font-size: 0.72rem;
+    color: #4a6382;
+    font-weight: 500;
+}
+
+/* Bottom Banner */
+.bottom-banner {
+    background: #eaf2fb;
+    border-top: 1px solid #d4e4f5;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hospital-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+}
+
+.info-icon {
+    background: #0056b3;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    margin-top: 4px;
+}
+
+.info-text h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0b3954;
+    margin-bottom: 0.2rem;
+}
+
+.info-text p {
+    font-size: 0.85rem;
+    color: #335372;
+    margin-bottom: 0.3rem;
+}
+
+.contact-details {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e3a5f;
+}
+
+.divider {
+    width: 1px;
+    height: 50px;
+    background-color: #cbdcf0;
+}
+
+.hospital-motto {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.motto-text {
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    color: #0066cc;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    font-weight: 700;
+}
+
+.motto-icon {
+    font-size: 2.8rem;
+    color: #0066cc;
+}

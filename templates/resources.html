@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Resources - NKV Hospital</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.65)), 
+                        url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .navbar {
+            background: #ffffff;
+            padding: 14px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+        .navbar h2 { margin: 0; color: #0284c7; font-size: 22px; font-weight: 700; }
+        .navbar nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .navbar nav a.active { color: #0284c7; }
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 25px auto;
+            padding: 0 25px 40px;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .page-header h1 {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .page-header p { color: #cbd5e1; font-size: 14px; margin: 0; }
+        .reset-btn {
+            background: #ef4444;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Dynamic Admin Panel Card */
+        .admin-panel {
+            background: #ffffff;
+            padding: 18px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+        .admin-panel h4 { margin: 0 0 12px 0; color: #0f172a; font-size: 16px; font-weight: 700; }
+        .admin-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .admin-form select, .admin-form input {
+            padding: 9px 12px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+        .admin-form input { flex: 1; min-width: 160px; }
+        .add-btn {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Resource Grid */
+        .resources-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            align-items: stretch;
+        }
+        @media (max-width: 1100px) { .resources-row { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .resources-row { grid-template-columns: 1fr; } }
+        .resource-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid #0284c7;
+            height: 560px;
+        }
+        .resource-card.card-bed { border-top-color: #0ea5e9; }
+        .resource-card.card-room { border-top-color: #f59e0b; }
+        .resource-card.card-slot { border-top-color: #8b5cf6; }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 14px;
+        }
+        .card-header h3 { margin: 0; font-size: 18px; color: #0f172a; font-weight: 700; }
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 6px;
+            flex: 1;
+        }
+        .item-list::-webkit-scrollbar { width: 5px; }
+        .item-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .item-box {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+        }
+        .item-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .item-title { font-weight: 700; color: #0f172a; font-size: 14px; }
+        .item-detail { font-size: 12px; color: #64748b; }
+        .patient-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
+        .patient-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: #b91c1c;
+            background: #fee2e2;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .release-link {
+            font-size: 11px;
+            color: #0284c7;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .badge-available { background: #dcfce7; color: #15803d; }
+        .badge-occupied { background: #fee2e2; color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>💙 NKV Hospital</h2>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/patients">Register Patient</a>
+            <a href="/resources" class="active">View Resources</a>
+        </nav>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="page-header">
+            <div>
+                <h1>Hospital Resources Status</h1>
+                <p>Live tracking of hospital resources and patient allocations</p>
+            </div>
+            <a href="/reset" class="reset-btn">🔄 Reset All Resources</a>
+        </div>
+
+        <!-- Dynamic Management Form -->
+        <div class="admin-panel">
+            <h4>➕ Dynamically Add Hospital Resource</h4>
+            <form class="admin-form" method="POST" action="/admin/add">
+                <select name="resource_type" id="resSelect" onchange="updateFormFields()" required>
+                    <option value="doctor">🩺 Add Doctor</option>
+                    <option value="bed">🛏️ Add Bed</option>
+                    <option value="room">🚪 Add Room</option>
+                </select>
+
+                <div id="dynamicInputs" style="display: flex; gap: 10px; flex: 1;">
+                    <input type="text" name="name" placeholder="Doctor Name (e.g. Dr. Rajesh)" required>
+                    <input type="text" name="specialization" placeholder="Specialization (e.g. Cardiology)" required>
+                </div>
+
+                <button type="submit" class="add-btn">+ Add to Hospital</button>
+            </form>
+        </div>
+
+        <div class="resources-row">
+            
+            <!-- 1. Doctors -->
+            <div class="resource-card">
+                <div class="card-header"><h3>🩺 Doctors</h3></div>
+                <div class="item-list">
+                    {% for doc in doctors %}
+                    <div class="item-box">
+                        <div class="item-row-top">
+                            <span class="item-title">{{ doc['name'] }}</span>
+                            <span class="badge {% if doc['available'] == 1 %}badge-available{% else %}badge-occupied{% endif %}">
+                                {{ 'Available' if doc['available'] == 1 else 'Assigned' }}
+                            </span>
+                        </div>
+                        <span class="item-detail">{{ doc['specialization'] }}</span>
+                        {% if doc['available'] == 0 %}
+                        <div class="patient-row">
+                            <span class="patient-tag">👤 {{ doc['patient_name'] if doc['patient_name'] else 'Assigned' }}</span>
+                            <a href="/release/doctor/{{ doc['id'] }}" class="release-link">Free Doctor</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 2. Beds -->
+            <div class="resource-card card-bed">
+                <div class="card-header"><h3>🛏️ Beds</h3></div>
+                <div class="item-list">
+                    {% for bed in beds %}
+                    <div class="item-box">
+                        <div class="item-row-top">
+                            <span class="item-title">Bed {{ bed['bed_number'] }}</span>
+                            <span class="badge {% if bed['available'] == 1 %}badge-available{% else %}badge-occupied{% endif %}">
+                                {{ 'Available' if bed['available'] == 1 else 'Occupied' }}
+                            </span>
+                        </div>
+                        <span class="item-detail">Type: {{ bed['bed_type'] }}</span>
+                        {% if bed['available'] == 0 %}
+                        <div class="patient-row">
+                            <span class="patient-tag">👤 {{ bed['patient_name'] if bed['patient_name'] else 'Occupied' }}</span>
+                            <a href="/release/bed/{{ bed['id'] }}" class="release-link">Discharge Bed</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 3. Rooms -->
+            <div class="resource-card card-room">
+                <div class="card-header"><h3>🚪 Rooms</h3></div>
+                <div class="item-list">
+                    {% for room in rooms %}
+                    <div class="item-box">
+                        <div class="item-row-top">
+                            <span class="item-title">Room {{ room['room_number'] }}</span>
+                            <span class="badge {% if room['available'] == 1 %}badge-available{% else %}badge-occupied{% endif %}">
+                                {{ 'Available' if room['available'] == 1 else 'Occupied' }}
+                            </span>
+                        </div>
+                        <span class="item-detail">Category: {{ room['room_type'] }}</span>
+                        {% if room['available'] == 0 %}
+                        <div class="patient-row">
+                            <span class="patient-tag">👤 {{ room['patient_name'] if room['patient_name'] else 'Occupied' }}</span>
+                            <a href="/release/room/{{ room['id'] }}" class="release-link">Vacate Room</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- 4. Time Slots -->
+            <div class="resource-card card-slot">
+                <div class="card-header"><h3>⏰ Time Slots</h3></div>
+                <div class="item-list">
+                    {% for slot in slots %}
+                    <div class="item-box">
+                        <div class="item-row-top">
+                            <span class="item-title">{{ slot['slot'] }}</span>
+                            <span class="badge {% if slot['available'] == 1 %}badge-available{% else %}badge-occupied{% endif %}">
+                                {{ 'Available' if slot['available'] == 1 else 'Booked' }}
+                            </span>
+                        </div>
+                        <span class="item-detail">Consultation Slot</span>
+                        {% if slot['available'] == 0 %}
+                        <div class="patient-row">
+                            <span class="patient-tag">👤 {{ slot['patient_name'] if slot['patient_name'] else 'Booked' }}</span>
+                            <a href="/release/slot/{{ slot['id'] }}" class="release-link">Clear Slot</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script to change inputs based on selection -->
+    <script>
+        function updateFormFields() {
+            const select = document.getElementById("resSelect").value;
+            const container = document.getElementById("dynamicInputs");
+
+            if (select === "doctor") {
+                container.innerHTML = `
+                    <input type="text" name="name" placeholder="Doctor Name (e.g. Dr. Rajesh)" required>
+                    <input type="text" name="specialization" placeholder="Specialization (e.g. Cardiology)" required>
+                `;
+            } else if (select === "bed") {
+                container.innerHTML = `
+                    <input type="text" name="bed_number" placeholder="Bed Number (e.g. B-108)" required>
+                    <select name="bed_type" required>
+                        <option value="General">General</option>
+                        <option value="ICU">ICU</option>
+                        <option value="Private">Private</option>
+                    </select>
+                `;
+            } else if (select === "room") {
+                container.innerHTML = `
+                    <input type="text" name="room_number" placeholder="Room Number (e.g. R-207)" required>
+                    <select name="room_type" required>
+                        <option value="General">General</option>
+                        <option value="ICU">ICU</option>
+                        <option value="Private">Private</option>
+                        <option value="Operation">Operation</option>
+                    </select>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

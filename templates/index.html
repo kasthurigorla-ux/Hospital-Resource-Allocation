@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+  body {
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4)), 
+                url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed !important;
+    background-size: cover !important;
+  }
+
+  /* Madhyalo unna white cut box ni transparent chesthundhi */
+  .hero-section, .hero, .container, .main-content, div[class*="hero"], div[class*="left"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Icon boxes clean ga kanipinchadaniki light glass effect */
+  .stats-grid > div, .card, [class*="card"] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(8px) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NKV Hospital - Resource Allocation</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <span>NKV Hospital</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/patients">Register Patient</a>
+            <a href="/resources">View Resources</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="hero-section">
+        <!-- Hero Image on Right -->
+        <div class="hero-bg-container">
+            <img src="{{ url_for('static', filename='nkv.jpg') }}" alt="NKV Hospital Building" class="hero-image">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <!-- Hero Content on Left -->
+        <div class="hero-content">
+            <h1 class="hero-title">NKV Hospital</h1>
+            
+            <p class="hero-address">
+                <i class="fa-solid fa-location-dot"></i>
+                123 Health Street, Green Park, Hyderabad - 500081, Telangana, India
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/patients" class="btn btn-primary">
+                    <i class="fa-solid fa-user"></i> Register Patient
+                </a>
+                <a href="/resources" class="btn btn-outline">
+                    <i class="fa-solid fa-database"></i> View Resources
+                </a>
+            </div>
+
+            <!-- 4 Service Badges / Cards -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon-circle icon-blue">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <h4>Doctors</h4>
+                    <p>Specializations & Availability</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-circle icon-green">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+                    <h4>Beds</h4>
+                    <p>General | ICU | Private</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-circle icon-purple">
+                        <i class="fa-solid fa-door-open"></i>
+                    </div>
+                    <h4>Rooms</h4>
+                    <p>General | ICU | Operation</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="icon-circle icon-orange">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <h4>Time Slots</h4>
+                    <p>Efficient Scheduling</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Contact & Motto Bar -->
+    <footer class="bottom-banner">
+        <div class="hospital-info">
+            <div class="info-icon">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="info-text">
+                <h3>NKV Hospital</h3>
+                <p><i class="fa-solid fa-location-arrow"></i> 123 Health Street, Green Park, Hyderabad - 500081, Telangana, India</p>
+                <div class="contact-details">
+                    <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+                    <span><i class="fa-solid fa-envelope"></i> info@nkvhospital.in</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="hospital-motto">
+            <div class="motto-text">
+                <span>Your Health</span>
+                <span class="sub">Our Priority</span>
+            </div>
+            <div class="motto-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

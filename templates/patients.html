@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Patient - NKV Hospital</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.50), rgba(15, 23, 42, 0.60)), 
+                        url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: #ffffff;
+            padding: 14px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        }
+
+        .navbar h2 { margin: 0; color: #0284c7; font-size: 22px; font-weight: 700; }
+        .navbar nav a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .navbar nav a.active { color: #0284c7; }
+
+        /* Main Container */
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 28px;
+            padding: 40px 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 950px) {
+            .page-wrapper { flex-direction: column; align-items: center; }
+        }
+
+        /* Large & Comfortable Patient Form */
+        .patient-card {
+            background: #ffffff;
+            flex: 1.6;
+            width: 100%;
+            padding: 38px 45px;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .patient-card h2 { 
+            margin: 0 0 6px 0; 
+            color: #0f172a; 
+            font-size: 26px; 
+            font-weight: 800; 
+        }
+        
+        .subtitle { 
+            margin: 0 0 26px 0; 
+            color: #64748b; 
+            font-size: 15px; 
+        }
+
+        .field-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        .field-group input,
+        .field-group select {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            background: #f8fafc;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus {
+            background: #ffffff;
+            border-color: #0284c7;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.45);
+        }
+
+        /* Modern On-Duty Doctors Sidebar */
+        .doctors-preview-card {
+            background: #ffffff;
+            flex: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            border-top: 6px solid #0284c7;
+        }
+
+        .doctors-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .doctors-header h3 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .pulse-badge {
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #16a34a;
+            border-radius: 50%;
+        }
+
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: 480px;
+            padding-right: 5px;
+        }
+
+        .doc-list::-webkit-scrollbar { width: 4px; }
+        .doc-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        .doc-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .doc-card:hover {
+            border-color: #0284c7;
+            background: #ffffff;
+            transform: translateX(3px);
+        }
+
+        .doc-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .doc-avatar {
+            width: 42px;
+            height: 42px;
+            background: #e0f2fe;
+            color: #0284c7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .doc-meta strong {
+            display: block;
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .doc-meta span {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: #dcfce7;
+            color: #15803d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>💙 NKV Hospital</h2>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/patients" class="active">Register Patient</a>
+            <a href="/resources">View Resources</a>
+        </nav>
+    </div>
+
+    <div class="page-wrapper">
+        
+        <!-- Enlarged & Roomy Patient Registration Form -->
+        <div class="patient-card">
+            <h2>Patient Registration</h2>
+            <p class="subtitle">Enter patient health condition & bed requirements for optimal allocation</p>
+
+            <form method="POST" action="/patients">
+                
+                <div class="field-group">
+                    <label>Patient Full Name</label>
+                    <input type="text" name="name" placeholder="Enter patient's name" required>
+                </div>
+
+                <div class="field-grid-2">
+                    <div class="field-group" style="margin-bottom: 0;">
+                        <label>Age</label>
+                        <input type="number" name="age" placeholder="Age (years)" required>
+                    </div>
+
+                    <div class="field-group" style="margin-bottom: 0;">
+                        <label>Emergency Priority</label>
+                        <select name="priority" required>
+                            <option value="High">🚨 High Priority</option>
+                            <option value="Medium" selected>⚡ Medium Priority</option>
+                            <option value="Low">🌱 Low Priority</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Health Issue / Medical Condition</label>
+                    <select name="condition" required>
+                        <option value="" disabled selected>Select Diagnosis / Specialization Needed</option>
+                        <option value="Heart / Cardiac Issue (Cardiology)">🫀 Heart / Cardiac Issue (Cardiology)</option>
+                        <option value="Brain / Nerve Problem (Neurology)">🧠 Brain / Nerve Problem (Neurology)</option>
+                        <option value="Bone Fracture / Joint Pain (Orthopedics)">🦴 Bone Fracture / Joint Pain (Orthopedics)</option>
+                        <option value="Child / Infant Care (Pediatrics)">👶 Child / Infant Care (Pediatrics)</option>
+                        <option value="Fever / General Infection (General)">🩺 Fever / General Infection (General)</option>
+                        <option value="Critical Emergency / Trauma">⚠️ Critical Emergency / Trauma</option>
+                        <option value="Stable / Regular Checkup">📋 Stable / Regular Checkup</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label>Required Bed Category</label>
+                    <select name="required_bed" required>
+                        <option value="General" selected>General Ward Bed</option>
+                        <option value="ICU">ICU Bed (Intensive Care)</option>
+                        <option value="Private">Private Room Bed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">⚡ Run CSP & Allocate Hospital Resources</button>
+            </form>
+        </div>
+
+        <!-- Modern Stylish On-Duty Doctors Panel -->
+        <div class="doctors-preview-card">
+            <div class="doctors-header">
+                <h3>On-Duty Specialists</h3>
+                <span class="pulse-badge"><span class="pulse-dot"></span> Live</span>
+            </div>
+
+            <div class="doc-list">
+                {% if available_doctors %}
+                    {% for doc in available_doctors %}
+                    <div class="doc-card">
+                        <div class="doc-left">
+                            <div class="doc-avatar">🩺</div>
+                            <div class="doc-meta">
+                                <strong>{{ doc['name'] }}</strong>
+                                <span>{{ doc['specialization'] }}</span>
+                            </div>
+                        </div>
+                        <span class="status-tag">Available</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: #dc2626; font-size: 13px; font-weight: 600;">No doctors currently available. Please reset hospital resources.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
