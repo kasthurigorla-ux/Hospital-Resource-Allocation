@@ -1,43 +1,54 @@
 def doctor_matches(patient, doctor):
-    if doctor.get("available") != 1:
+    # Doctor free ga undali
+    if int(doctor.get("available", 0)) != 1:
         return False
 
-    patient_cond = str(patient.get("condition", "")).strip().lower()
-    doctor_spec = str(doctor.get("specialization", "")).strip().lower()
+    patient_cond = str(patient.get("condition", "")).lower()
+    doctor_spec = str(doctor.get("specialization", "")).lower()
 
-    # Direct match or partial word match (e.g. "cardiology" inside "heart / cardiac issue (cardiology)")
+    # Exact match or substring match
     if doctor_spec in patient_cond or patient_cond in doctor_spec:
         return True
 
-    # Common keyword mappings
-    keywords = {
-        "cardiology": ["heart", "cardiac", "chest"],
-        "neurology": ["brain", "neuro", "stroke", "head"],
-        "orthopedics": ["bone", "fracture", "joint", "ortho"],
-        "pediatrics": ["child", "pediatric", "kid", "baby"],
-        "general": ["fever", "cold", "cough", "checkup", "general"]
+    # Keyword mappings
+    mappings = {
+        "cardiology": ["heart", "cardiac", "chest", "bp", "cardio"],
+        "neurology": ["brain", "neuro", "stroke", "paralysis", "head"],
+        "orthopedics": ["bone", "fracture", "joint", "ortho", "leg", "hand"],
+        "pediatrics": ["child", "pediatric", "kid", "baby", "infant"],
+        "general": ["fever", "cold", "cough", "checkup", "general", "pain"]
     }
 
-    words = keywords.get(doctor_spec, [])
-    for word in words:
-        if word in patient_cond:
+    # Match doctor spec keywords inside patient condition
+    spec_keywords = mappings.get(doctor_spec, [])
+    for kw in spec_keywords:
+        if kw in patient_cond:
             return True
+
+    # If general physician, accept general conditions
+    if doctor_spec == "general":
+        return True
 
     return False
 
 
 def bed_matches(patient, bed):
-    if bed.get("available") != 1:
+    # Bed free ga undali
+    if int(bed.get("available", 0)) != 1:
         return False
     
     req_bed = str(patient.get("required_bed", "")).strip().lower()
     bed_type = str(bed.get("bed_type", "")).strip().lower()
 
-    return req_bed in bed_type or bed_type in req_bed
+    if req_bed == bed_type or req_bed in bed_type or bed_type in req_bed:
+        return True
+
+    return False
 
 
 def room_matches(patient, room):
-    if room.get("available") != 1:
+    # Room free ga undali
+    if int(room.get("available", 0)) != 1:
         return False
     
     req_bed = str(patient.get("required_bed", "")).strip().lower()
@@ -45,5 +56,9 @@ def room_matches(patient, room):
 
     if "icu" in req_bed:
         return "icu" in room_type
-    
+
+    # Non-ICU patients can use general or private rooms
+    if "icu" in room_type:
+        return False
+
     return True
