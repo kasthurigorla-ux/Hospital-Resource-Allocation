@@ -5,8 +5,231 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Patient - NKV Hospital</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('/static/nkv.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a.active {
+            color: #0284c7;
+            border-bottom: 2px solid #0284c7;
+        }
+
+        .main-wrapper {
+            max-width: 1150px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .form-card {
+            flex: 1.25;
+        }
+
+        .list-card {
+            flex: 0.85;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #1e293b;
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: #0284c7;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #0369a1;
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header-flex h3 {
+            font-size: 20px;
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .live-tag {
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 700;
+            background: #dcfce7;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #ffffff;
+        }
+
+        .doc-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .doc-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .doc-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .doc-spec {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            font-weight: 600;
+            color: #16a34a;
+            background: #dcfce7;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+    </style>
 </head>
-<body class="bg-hospital">
+<body>
     <nav class="navbar">
         <div class="logo">💙 NKV Hospital</div>
         <div class="nav-links">
@@ -16,8 +239,8 @@
         </div>
     </nav>
 
-    <div class="main-container">
-        <!-- Left Column: Patient Form -->
+    <div class="main-wrapper">
+        <!-- Left: Patient Form -->
         <div class="card form-card">
             <h2>Patient Registration</h2>
             <p class="subtitle">Enter patient health condition & bed requirements for optimal allocation</p>
@@ -25,15 +248,15 @@
             <form action="{{ url_for('patients') }}" method="POST">
                 <div class="form-group">
                     <label>Patient Full Name</label>
-                    <input type="text" name="name" required placeholder="Enter patient's name">
+                    <input type="text" name="name" required placeholder="Enter patient's name" value="Kasthuri Gorla">
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group half">
+                    <div class="form-group">
                         <label>Age</label>
-                        <input type="number" name="age" required placeholder="Age (years)">
+                        <input type="number" name="age" required placeholder="Age (years)" value="20">
                     </div>
-                    <div class="form-group half">
+                    <div class="form-group">
                         <label>Emergency Priority</label>
                         <select name="priority">
                             <option value="High">⚡ High Priority</option>
@@ -46,54 +269,55 @@
                 <div class="form-group">
                     <label>Health Issue / Medical Condition</label>
                     <select name="condition" required>
-                        <option value="" disabled selected>Select Diagnosis / Specialization Needed</option>
-                        <option value="Heart / Cardiac Issue (Cardiology)">Heart / Cardiac Issue (Cardiology)</option>
-                        <option value="Brain / Stroke Issue (Neurology)">Brain / Stroke Issue (Neurology)</option>
-                        <option value="Bone Fracture / Joint Pain (Orthopedics)">Bone Fracture / Joint Pain (Orthopedics)</option>
-                        <option value="Fever / General Infection (General)">Fever / General Infection (General)</option>
-                        <option value="Child Care / Infant Care (Pediatrics)">Child Care / Infant Care (Pediatrics)</option>
-                        <option value="Ear / Nose / Throat (ENT)">Ear / Nose / Throat (ENT)</option>
+                        <option value="General" selected>🩺 Fever / General Infection (General)</option>
+                        <option value="Cardiology">Heart / Cardiac Issue (Cardiology)</option>
+                        <option value="Neurology">Brain / Stroke Issue (Neurology)</option>
+                        <option value="Orthopedics">Bone Fracture / Joint Pain (Orthopedics)</option>
+                        <option value="Pediatrics">Child Care / Infant Care (Pediatrics)</option>
+                        <option value="ENT">Ear / Nose / Throat (ENT)</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Required Bed Category</label>
                     <select name="required_bed" required>
-                        <option value="General Ward Bed" selected>General Ward Bed</option>
-                        <option value="ICU Bed">ICU Bed</option>
-                        <option value="Private Room Bed">Private Room Bed</option>
+                        <option value="General" selected>General Ward Bed</option>
+                        <option value="ICU">ICU Bed</option>
+                        <option value="Private">Private Room Bed</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-primary">
+                <button type="submit" class="submit-btn">
                     ⚡ Run CSP & Allocate Hospital Resources
                 </button>
             </form>
         </div>
 
-        <!-- Right Column: Live Specialists Panel -->
+        <!-- Right: Doctors Panel -->
         <div class="card list-card">
             <div class="card-header-flex">
                 <h3>On-Duty Specialists</h3>
-                <span class="live-indicator">● Live</span>
+                <span class="live-tag">● Live</span>
             </div>
 
-            {% if doctors and doctors|length > 0 %}
-                <div class="doctor-list">
+            <div class="doctor-list">
+                {% if doctors and doctors|length > 0 %}
                     {% for doc in doctors %}
-                    <div class="doctor-item">
-                        <div class="doc-icon">🩺</div>
-                        <div class="doc-info">
-                            <div class="doc-name">{{ doc.name }}</div>
-                            <div class="doc-spec">{{ doc.specialization }}</div>
+                    <div class="doc-item">
+                        <div class="doc-left">
+                            <div class="doc-icon">🩺</div>
+                            <div>
+                                <div class="doc-name">{{ doc.name }}</div>
+                                <div class="doc-spec">{{ doc.specialization }}</div>
+                            </div>
                         </div>
-                        <span class="badge badge-success">Available</span>
+                        <span class="status-badge">Available</span>
                     </div>
                     {% endfor %}
-                </div>
-            {% else %}
-                <p class="error-msg">No doctors currently available. Please reset hospital resources.</p>
-            {% endif %}
+                {% else %}
+                    <p style="color: #64748b; font-size: 13px;">No doctors available right now.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>
