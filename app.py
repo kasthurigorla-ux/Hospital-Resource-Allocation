@@ -10,17 +10,14 @@ DATABASE_DIR = os.path.join(BASE_DIR, "database")
 os.makedirs(DATABASE_DIR, exist_ok=True)
 DATABASE = os.path.join(DATABASE_DIR, "hospital.db")
 
-
 def get_db():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
-
 def init_db():
     conn = get_db()
     cursor = conn.cursor()
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS doctors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +26,6 @@ def init_db():
             available INTEGER DEFAULT 1
         )
     """)
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS beds (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +34,6 @@ def init_db():
             available INTEGER DEFAULT 1
         )
     """)
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS rooms (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,7 +42,6 @@ def init_db():
             available INTEGER DEFAULT 1
         )
     """)
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS time_slots (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,7 +49,6 @@ def init_db():
             available INTEGER DEFAULT 1
         )
     """)
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS patients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,7 +59,6 @@ def init_db():
             priority TEXT NOT NULL
         )
     """)
-
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS allocations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,7 +80,6 @@ def init_db():
             ("Dr. Sneha", "Pediatrics"),
             ("Dr. Kasthuri", "ENT")
         ])
-
         cursor.executemany("INSERT INTO beds (bed_number, bed_type, available) VALUES (?, ?, 1)", [
             ("Bed B-101", "General"),
             ("Bed B-102", "General"),
@@ -97,7 +88,6 @@ def init_db():
             ("Bed B-105", "ICU"),
             ("Bed B-106", "Private")
         ])
-
         cursor.executemany("INSERT INTO rooms (room_number, room_type, available) VALUES (?, ?, 1)", [
             ("Room R-201", "General"),
             ("Room R-202", "General"),
@@ -106,7 +96,6 @@ def init_db():
             ("Room R-205", "Operation"),
             ("Room R-206", "Private")
         ])
-
         cursor.executemany("INSERT INTO time_slots (slot_time, available) VALUES (?, 1)", [
             ("09:00 AM - 10:00 AM",),
             ("10:00 AM - 11:00 AM",),
@@ -114,18 +103,14 @@ def init_db():
             ("02:00 PM - 03:00 PM",),
             ("03:00 PM - 04:00 PM",)
         ])
-
     conn.commit()
     conn.close()
 
-
 init_db()
-
 
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 @app.route("/patients", methods=["GET", "POST"])
 def patients():
@@ -144,13 +129,11 @@ def patients():
         """, (name, age, condition, required_bed, priority))
         conn.commit()
         conn.close()
-
         return redirect(url_for("allocate"))
 
     doctors = conn.execute("SELECT * FROM doctors WHERE available = 1").fetchall()
     conn.close()
     return render_template("patients.html", doctors=doctors)
-
 
 @app.route("/allocate")
 def allocate():
@@ -179,7 +162,6 @@ def allocate():
         conn.execute("UPDATE beds SET available = 0 WHERE id = ?", (result["bed"]["id"],))
         conn.execute("UPDATE rooms SET available = 0 WHERE id = ?", (result["room"]["id"],))
         conn.execute("UPDATE time_slots SET available = 0 WHERE id = ?", (result["slot"]["id"],))
-
         conn.execute("""
             INSERT INTO allocations (patient_name, doctor_id, bed_id, room_id, slot_id)
             VALUES (?, ?, ?, ?, ?)
@@ -195,7 +177,6 @@ def allocate():
 
     return render_template("result.html", patient=patient, result=result)
 
-
 @app.route("/resources")
 def resources():
     conn = get_db()
@@ -203,31 +184,20 @@ def resources():
         SELECT d.*, a.patient_name FROM doctors d
         LEFT JOIN allocations a ON d.id = a.doctor_id
     """).fetchall()
-
     beds = conn.execute("""
         SELECT b.*, a.patient_name FROM beds b
         LEFT JOIN allocations a ON b.id = a.bed_id
     """).fetchall()
-
     rooms = conn.execute("""
         SELECT r.*, a.patient_name FROM rooms r
         LEFT JOIN allocations a ON r.id = a.room_id
     """).fetchall()
-
     slots = conn.execute("""
         SELECT s.*, a.patient_name FROM time_slots s
         LEFT JOIN allocations a ON s.id = a.slot_id
     """).fetchall()
     conn.close()
-
-    return render_template(
-        "resources.html",
-        doctors=doctors,
-        beds=beds,
-        rooms=rooms,
-        slots=slots
-    )
-
+    return render_template("resources.html", doctors=doctors, beds=beds, rooms=rooms, slots=slots)
 
 @app.route("/release/<res_type>/<int:res_id>")
 def release_resource(res_type, res_id):
@@ -248,7 +218,6 @@ def release_resource(res_type, res_id):
     conn.close()
     return redirect(url_for("resources"))
 
-
 @app.route("/reset")
 def reset():
     conn = get_db()
@@ -260,7 +229,6 @@ def reset():
     conn.commit()
     conn.close()
     return redirect(url_for("resources"))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
