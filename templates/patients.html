@@ -241,13 +241,13 @@
             <form action="{{ url_for('patients') }}" method="POST">
                 <div class="form-group">
                     <label>Patient Full Name</label>
-                    <input type="text" name="name" required placeholder="Enter patient's name" value="Kasthuri Gorla">
+                    <input type="text" name="name" required placeholder="Enter patient's name">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Age</label>
-                        <input type="number" name="age" required placeholder="Age (years)" value="20">
+                        <input type="number" name="age" required placeholder="Age (years)">
                     </div>
                     <div class="form-group">
                         <label>Emergency Priority</label>
@@ -262,7 +262,8 @@
                 <div class="form-group">
                     <label>Health Issue / Medical Condition</label>
                     <select name="condition" required>
-                        <option value="General" selected>🩺 Fever / General Infection (General)</option>
+                        <option value="" disabled selected>Select Diagnosis / Specialization Needed</option>
+                        <option value="General">🩺 Fever / General Infection (General)</option>
                         <option value="Cardiology">Heart / Cardiac Issue (Cardiology)</option>
                         <option value="Neurology">Brain / Stroke Issue (Neurology)</option>
                         <option value="Orthopedics">Bone Fracture / Joint Pain (Orthopedics)</option>

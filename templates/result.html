@@ -4,9 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allocation Result - NKV Hospital</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), 
+                        url('https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=1600&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .navbar {
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            font-size: 14px;
+            padding-bottom: 4px;
+        }
+
+        .main-wrapper {
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+
+        .success-box {
+            background: #e6f4ea;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .success-box h4 {
+            color: #137333;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .success-box p {
+            color: #137333;
+            font-size: 13px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .patient-box {
+            display: flex;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .patient-val {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .patient-sub {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .grid-resources {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .res-item {
+            border: 1.5px solid #e2e8f0;
+            border-left: 4px solid #0284c7;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .res-type {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .res-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 6px;
+        }
+
+        .res-sub {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .btn-register {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 13px;
+            background: #0284c7;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-register:hover {
+            background: #0369a1;
+        }
+    </style>
 </head>
-<body class="bg-hospital">
+<body>
     <nav class="navbar">
         <div class="logo">💙 NKV Hospital</div>
         <div class="nav-links">
@@ -16,61 +181,60 @@
         </div>
     </nav>
 
-    <div class="main-container" style="max-width: 750px; margin: 40px auto; padding: 0 20px;">
-        <div class="card" style="background: #ffffff; border-radius: 20px; padding: 32px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+    <div class="main-wrapper">
+        <div class="card">
             {% if result %}
-                <div style="background: #e6f4ea; border-radius: 12px; padding: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                <div class="success-box">
                     <span style="font-size: 24px;">✅</span>
                     <div>
-                        <h4 style="color: #137333; margin: 0; font-size: 16px;">Resources Successfully Allocated</h4>
-                        <p style="color: #137333; margin: 0; font-size: 13px;">CSP algorithm matched optimal resources for the patient.</p>
+                        <h4>Resources Successfully Allocated</h4>
+                        <p>CSP algorithm matched optimal resources for the patient.</p>
                     </div>
                 </div>
 
-                <h4 style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; margin-bottom: 12px;">PATIENT DETAILS</h4>
-                <div style="display: flex; justify-content: space-between; background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+                <div class="section-label">PATIENT DETAILS</div>
+                <div class="patient-box">
                     <div>
-                        <div style="font-size: 14px; font-weight: 700; color: #1e293b;">Name: {{ patient.name }}</div>
-                        <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Condition: {{ patient.condition }}</div>
+                        <div class="patient-val">Name: {{ patient.name }}</div>
+                        <div class="patient-sub">Condition: {{ patient.condition }}</div>
                     </div>
                     <div>
-                        <div style="font-size: 14px; font-weight: 700; color: #1e293b;">Age: {{ patient.age }}</div>
-                        <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Priority: {{ patient.priority }}</div>
+                        <div class="patient-val">Age: {{ patient.age }}</div>
+                        <div class="patient-sub">Priority: {{ patient.priority }}</div>
                     </div>
                 </div>
 
-                <h4 style="font-size: 12px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; margin-bottom: 12px;">ALLOCATED RESOURCES (VIA CSP)</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
-                    <div style="border: 1.5px solid #e2e8f0; border-left: 4px solid #0284c7; padding: 14px; border-radius: 10px;">
-                        <div style="font-size: 11px; font-weight: 700; color: #0284c7;">🩺 DOCTOR</div>
-                        <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">{{ result.doctor.name }}</div>
-                        <div style="font-size: 12px; color: #64748b;">{{ result.doctor.specialization }}</div>
+                <div class="section-label">ALLOCATED RESOURCES (VIA CSP)</div>
+                <div class="grid-resources">
+                    <div class="res-item">
+                        <div class="res-type">🩺 DOCTOR</div>
+                        <div class="res-title">{{ result.doctor.name }}</div>
+                        <div class="res-sub">{{ result.doctor.specialization }}</div>
                     </div>
-                    <div style="border: 1.5px solid #e2e8f0; border-left: 4px solid #0284c7; padding: 14px; border-radius: 10px;">
-                        <div style="font-size: 11px; font-weight: 700; color: #0284c7;">🛏️ BED</div>
-                        <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">{{ result.bed.bed_number }}</div>
-                        <div style="font-size: 12px; color: #64748b;">{{ result.bed.bed_type }}</div>
+                    <div class="res-item">
+                        <div class="res-type">🛏️ BED</div>
+                        <div class="res-title">{{ result.bed.bed_number }}</div>
+                        <div class="res-sub">{{ result.bed.bed_type }}</div>
                     </div>
-                    <div style="border: 1.5px solid #e2e8f0; border-left: 4px solid #0284c7; padding: 14px; border-radius: 10px;">
-                        <div style="font-size: 11px; font-weight: 700; color: #0284c7;">🚪 ROOM</div>
-                        <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">{{ result.room.room_number }}</div>
-                        <div style="font-size: 12px; color: #64748b;">{{ result.room.room_type }}</div>
+                    <div class="res-item">
+                        <div class="res-type">🚪 ROOM</div>
+                        <div class="res-title">{{ result.room.room_number }}</div>
+                        <div class="res-sub">{{ result.room.room_type }}</div>
                     </div>
-                    <div style="border: 1.5px solid #e2e8f0; border-left: 4px solid #0284c7; padding: 14px; border-radius: 10px;">
-                        <div style="font-size: 11px; font-weight: 700; color: #0284c7;">⏰ TIME SLOT</div>
-                        <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-top: 4px;">{{ result.slot.slot_time }}</div>
-                        <div style="font-size: 12px; color: #64748b;">Allocated Slot</div>
+                    <div class="res-item">
+                        <div class="res-type">⏰ TIME SLOT</div>
+                        <div class="res-title">{{ result.slot.slot_time }}</div>
+                        <div class="res-sub">Allocated Slot</div>
                     </div>
                 </div>
             {% else %}
                 <div style="background: #fde8e8; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
-                    <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
-                    <h3 style="color: #9b1c1c; font-size: 16px; font-weight: 700; margin-bottom: 6px;">No Resources Could Satisfy Constraints</h3>
-                    <p style="color: #9b1c1c; font-size: 13px;">All matching doctors or required beds are currently occupied. Please reset or discharge resources.</p>
+                    <h3 style="color: #9b1c1c; font-size: 16px; font-weight: 700; margin-bottom: 6px;">⚠️ No Resources Available</h3>
+                    <p style="color: #9b1c1c; font-size: 13px;">Constraints could not be satisfied. Please check resources status.</p>
                 </div>
             {% endif %}
 
-            <a href="{{ url_for('patients') }}" style="display: block; width: 100%; text-align: center; padding: 14px; background: #0284c7; color: #ffffff; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 15px;">
+            <a href="{{ url_for('patients') }}" class="btn-register">
                 + Register Another Patient
             </a>
         </div>
