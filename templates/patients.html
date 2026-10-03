@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Patient - NKV Hospital</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
             min-height: 100vh;
-            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url('/static/nkv.jpg') no-repeat center center fixed;
+            background-color: #1e293b;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), url("{{ url_for('static', filename='nkv.jpg') }}");
+            background-repeat: no-repeat;
+            background-position: center center;
             background-size: cover;
+            background-attachment: fixed;
         }
 
         .navbar {
@@ -56,19 +59,19 @@
         }
 
         .main-wrapper {
-            max-width: 1150px;
-            margin: 40px auto;
+            max-width: 1100px;
+            margin: 35px auto;
             padding: 0 20px;
             display: flex;
-            gap: 30px;
+            gap: 24px;
             align-items: flex-start;
         }
 
         .card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
         }
 
         .form-card {
@@ -89,17 +92,17 @@
         .subtitle {
             color: #64748b;
             font-size: 13px;
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .form-row {
             display: flex;
             gap: 16px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .form-row .form-group {
@@ -112,21 +115,20 @@
             font-size: 13px;
             font-weight: 600;
             color: #334155;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         input[type="text"],
         input[type="number"],
         select {
             width: 100%;
-            padding: 12px 14px;
+            padding: 11px 14px;
             border: 1.5px solid #cbd5e1;
             border-radius: 10px;
             font-size: 14px;
             color: #1e293b;
             background: #f8fafc;
             outline: none;
-            transition: all 0.2s;
         }
 
         input:focus, select:focus {
@@ -137,7 +139,7 @@
 
         .submit-btn {
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             background: #0284c7;
             color: #ffffff;
             border: none;
@@ -145,13 +147,8 @@
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-            transition: background 0.2s;
         }
 
         .submit-btn:hover {
@@ -162,11 +159,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .card-header-flex h3 {
-            font-size: 20px;
+            font-size: 19px;
             color: #0f172a;
             font-weight: 800;
         }
@@ -176,7 +173,7 @@
             font-size: 12px;
             font-weight: 700;
             background: #dcfce7;
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 20px;
         }
 
@@ -184,28 +181,28 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 1.5px solid #e2e8f0;
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             background: #ffffff;
         }
 
         .doc-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .doc-icon {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             background: #e0f2fe;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 17px;
         }
 
         .doc-name {
@@ -220,11 +217,11 @@
         }
 
         .status-badge {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #16a34a;
             background: #dcfce7;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
         }
     </style>
@@ -240,7 +237,7 @@
     </nav>
 
     <div class="main-wrapper">
-        <!-- Left: Patient Form -->
+        <!-- Left: Form -->
         <div class="card form-card">
             <h2>Patient Registration</h2>
             <p class="subtitle">Enter patient health condition & bed requirements for optimal allocation</p>
@@ -315,7 +312,7 @@
                     </div>
                     {% endfor %}
                 {% else %}
-                    <p style="color: #64748b; font-size: 13px;">No doctors available right now.</p>
+                    <p style="color: #64748b; font-size: 13px;">No doctors currently available.</p>
                 {% endif %}
             </div>
         </div>
