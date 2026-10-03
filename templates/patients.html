@@ -14,8 +14,8 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)), 
-                        url('https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=1600&auto=format&fit=crop') no-repeat center center fixed;
+            background: linear-gradient(rgba(15, 23, 42, 0.40), rgba(15, 23, 42, 0.40)), 
+                        url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1600&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -234,6 +234,7 @@
     </nav>
 
     <div class="main-wrapper">
+        <!-- Left: Form -->
         <div class="card form-card">
             <h2>Patient Registration</h2>
             <p class="subtitle">Enter patient health condition & bed requirements for optimal allocation</p>
@@ -264,11 +265,11 @@
                     <select name="condition" required>
                         <option value="" disabled selected>Select Diagnosis / Specialization Needed</option>
                         <option value="General">🩺 Fever / General Infection (General)</option>
-                        <option value="Cardiology">Heart / Cardiac Issue (Cardiology)</option>
-                        <option value="Neurology">Brain / Stroke Issue (Neurology)</option>
-                        <option value="Orthopedics">Bone Fracture / Joint Pain (Orthopedics)</option>
-                        <option value="Pediatrics">Child Care / Infant Care (Pediatrics)</option>
-                        <option value="ENT">Ear / Nose / Throat (ENT)</option>
+                        <option value="Cardiology">❤️ Heart / Cardiac Issue (Cardiology)</option>
+                        <option value="Neurology">🧠 Brain / Stroke Issue (Neurology)</option>
+                        <option value="Orthopedics">🦴 Bone Fracture / Joint Pain (Orthopedics)</option>
+                        <option value="Pediatrics">👶 Child Care / Infant Care (Pediatrics)</option>
+                        <option value="ENT">👂 Ear / Nose / Throat (ENT)</option>
                     </select>
                 </div>
 
@@ -287,6 +288,7 @@
             </form>
         </div>
 
+        <!-- Right: Doctors List -->
         <div class="card list-card">
             <div class="card-header-flex">
                 <h3>On-Duty Specialists</h3>
