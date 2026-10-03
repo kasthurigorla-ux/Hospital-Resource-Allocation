@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
-from datetime import datetime, timedelta
 from allocation.csp import find_allocation
 
 app = Flask(__name__)
@@ -22,7 +21,6 @@ def init_db():
     conn = get_db()
     cursor = conn.cursor()
 
-    # Tables creation
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS doctors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,12 +74,10 @@ def init_db():
             doctor_id INTEGER,
             bed_id INTEGER,
             room_id INTEGER,
-            slot_id INTEGER,
-            allocated_at TEXT
+            slot_id INTEGER
         )
     """)
 
-    # Seed default data if empty
     doc_count = cursor.execute("SELECT COUNT(*) FROM doctors").fetchone()[0]
     if doc_count == 0:
         cursor.executemany("INSERT INTO doctors (name, specialization, available) VALUES (?, ?, 1)", [
@@ -123,47 +119,17 @@ def init_db():
     conn.close()
 
 
-def auto_release_expired_resources():
-    """Automatically releases resources allocated more than 2 minutes ago"""
-    try:
-        conn = get_db()
-        # 2 minutes time limit (demo kosam)
-        cutoff_time = (datetime.now() - timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M:%S")
-
-        expired_allocations = conn.execute("""
-            SELECT * FROM allocations WHERE allocated_at IS NOT NULL AND allocated_at <= ?
-        """, (cutoff_time,)).fetchall()
-
-        for alloc in expired_allocations:
-            if alloc["doctor_id"]:
-                conn.execute("UPDATE doctors SET available = 1 WHERE id = ?", (alloc["doctor_id"],))
-            if alloc["bed_id"]:
-                conn.execute("UPDATE beds SET available = 1 WHERE id = ?", (alloc["bed_id"],))
-            if alloc["room_id"]:
-                conn.execute("UPDATE rooms SET available = 1 WHERE id = ?", (alloc["room_id"],))
-            if alloc["slot_id"]:
-                conn.execute("UPDATE time_slots SET available = 1 WHERE id = ?", (alloc["slot_id"],))
-            conn.execute("DELETE FROM allocations WHERE id = ?", (alloc["id"],))
-
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print("Auto-release check notice:", e)
-
-
-# Run DB initialization
 init_db()
 
 
 @app.route("/")
 def index():
-    auto_release_expired_resources()
     return render_template("index.html")
 
 
 @app.route("/patients", methods=["GET", "POST"])
 def patients():
-    auto_release_expired_resources()
+    conn = get_db()
     if request.method == "POST":
         name = request.form.get("name")
         age = request.form.get("age")
@@ -171,7 +137,6 @@ def patients():
         required_bed = request.form.get("required_bed")
         priority = request.form.get("priority")
 
-        conn = get_db()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO patients (name, age, condition, required_bed, priority)
@@ -182,12 +147,13 @@ def patients():
 
         return redirect(url_for("allocate"))
 
-    return render_template("patients.html")
+    doctors = conn.execute("SELECT * FROM doctors WHERE available = 1").fetchall()
+    conn.close()
+    return render_template("patients.html", doctors=doctors)
 
 
 @app.route("/allocate")
 def allocate():
-    auto_release_expired_resources()
     conn = get_db()
     patient = conn.execute("SELECT * FROM patients ORDER BY id DESC LIMIT 1").fetchone()
     doctors = conn.execute("SELECT * FROM doctors WHERE available = 1").fetchall()
@@ -208,23 +174,21 @@ def allocate():
     )
 
     if result:
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conn = get_db()
         conn.execute("UPDATE doctors SET available = 0 WHERE id = ?", (result["doctor"]["id"],))
         conn.execute("UPDATE beds SET available = 0 WHERE id = ?", (result["bed"]["id"],))
         conn.execute("UPDATE rooms SET available = 0 WHERE id = ?", (result["room"]["id"],))
         conn.execute("UPDATE time_slots SET available = 0 WHERE id = ?", (result["slot"]["id"],))
-        
+
         conn.execute("""
-            INSERT INTO allocations (patient_name, doctor_id, bed_id, room_id, slot_id, allocated_at)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO allocations (patient_name, doctor_id, bed_id, room_id, slot_id)
+            VALUES (?, ?, ?, ?, ?)
         """, (
             patient["name"],
             result["doctor"]["id"],
             result["bed"]["id"],
             result["room"]["id"],
-            result["slot"]["id"],
-            current_time
+            result["slot"]["id"]
         ))
         conn.commit()
         conn.close()
@@ -234,7 +198,6 @@ def allocate():
 
 @app.route("/resources")
 def resources():
-    auto_release_expired_resources()
     conn = get_db()
     doctors = conn.execute("""
         SELECT d.*, a.patient_name FROM doctors d
