@@ -6,37 +6,36 @@
     <title>Register Patient - NKV Hospital</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="bg-hospital">
     <nav class="navbar">
         <div class="logo">💙 NKV Hospital</div>
         <div class="nav-links">
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('patients') }}" class="active">Register Patient</a>
-            <a href="{{ url_for('resources') }}">Live Status</a>
-            <a href="{{ url_for('reset') }}" class="reset-link">Reset Resources</a>
+            <a href="{{ url_for('resources') }}">View Resources</a>
         </div>
     </nav>
 
-    <div class="container" style="display: flex; gap: 20px; max-width: 1100px; margin: 30px auto; padding: 0 15px;">
-        <!-- Left Side: Registration Form -->
-        <div class="card" style="flex: 1.2; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+    <div class="main-container">
+        <!-- Left Column: Patient Form -->
+        <div class="card form-card">
             <h2>Patient Registration</h2>
-            <p style="color: #666; margin-bottom: 20px; font-size: 14px;">Enter patient health condition & bed requirements for optimal allocation</p>
+            <p class="subtitle">Enter patient health condition & bed requirements for optimal allocation</p>
             
             <form action="{{ url_for('patients') }}" method="POST">
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Patient Full Name</label>
-                    <input type="text" name="name" required placeholder="Enter patient's name" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                <div class="form-group">
+                    <label>Patient Full Name</label>
+                    <input type="text" name="name" required placeholder="Enter patient's name">
                 </div>
 
-                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                    <div style="flex: 1;">
-                        <label style="display: block; font-weight: bold; margin-bottom: 5px;">Age</label>
-                        <input type="number" name="age" required placeholder="Age (years)" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label>Age</label>
+                        <input type="number" name="age" required placeholder="Age (years)">
                     </div>
-                    <div style="flex: 1;">
-                        <label style="display: block; font-weight: bold; margin-bottom: 5px;">Emergency Priority</label>
-                        <select name="priority" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                    <div class="form-group half">
+                        <label>Emergency Priority</label>
+                        <select name="priority">
                             <option value="High">⚡ High Priority</option>
                             <option value="Medium" selected>⚡ Medium Priority</option>
                             <option value="Low">⚡ Low Priority</option>
@@ -44,56 +43,56 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Health Issue / Medical Condition</label>
-                    <select name="condition" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+                <div class="form-group">
+                    <label>Health Issue / Medical Condition</label>
+                    <select name="condition" required>
                         <option value="" disabled selected>Select Diagnosis / Specialization Needed</option>
-                        <option value="Cardiology">Heart / Cardiac Issue (Cardiology)</option>
-                        <option value="Neurology">Brain / Stroke Issue (Neurology)</option>
-                        <option value="Orthopedics">Bone Fracture / Joint Pain (Orthopedics)</option>
-                        <option value="Pediatrics">Child Care / Infant Care (Pediatrics)</option>
-                        <option value="ENT">Ear / Nose / Throat Issue (ENT)</option>
-                        <option value="General">Fever / General Checkup (General)</option>
+                        <option value="Heart / Cardiac Issue (Cardiology)">Heart / Cardiac Issue (Cardiology)</option>
+                        <option value="Brain / Stroke Issue (Neurology)">Brain / Stroke Issue (Neurology)</option>
+                        <option value="Bone Fracture / Joint Pain (Orthopedics)">Bone Fracture / Joint Pain (Orthopedics)</option>
+                        <option value="Fever / General Infection (General)">Fever / General Infection (General)</option>
+                        <option value="Child Care / Infant Care (Pediatrics)">Child Care / Infant Care (Pediatrics)</option>
+                        <option value="Ear / Nose / Throat (ENT)">Ear / Nose / Throat (ENT)</option>
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: block; font-weight: bold; margin-bottom: 5px;">Required Bed Category</label>
-                    <select name="required_bed" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
-                        <option value="General" selected>General Ward Bed</option>
-                        <option value="ICU">ICU Bed</option>
-                        <option value="Private">Private Room Bed</option>
+                <div class="form-group">
+                    <label>Required Bed Category</label>
+                    <select name="required_bed" required>
+                        <option value="General Ward Bed" selected>General Ward Bed</option>
+                        <option value="ICU Bed">ICU Bed</option>
+                        <option value="Private Room Bed">Private Room Bed</option>
                     </select>
                 </div>
 
-                <button type="submit" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px;">
+                <button type="submit" class="btn-primary">
                     ⚡ Run CSP & Allocate Hospital Resources
                 </button>
             </form>
         </div>
 
-        <!-- Right Side: On-Duty Specialists List -->
-        <div class="card" style="flex: 0.8; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); height: fit-content;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0;">On-Duty Specialists</h3>
-                <span style="color: #28a745; font-size: 13px; font-weight: bold;">● Live</span>
+        <!-- Right Column: Live Specialists Panel -->
+        <div class="card list-card">
+            <div class="card-header-flex">
+                <h3>On-Duty Specialists</h3>
+                <span class="live-indicator">● Live</span>
             </div>
 
             {% if doctors and doctors|length > 0 %}
-                <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="doctor-list">
                     {% for doc in doctors %}
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #007bff;">
-                        <div>
-                            <div style="font-weight: bold; font-size: 14px;">{{ doc.name }}</div>
-                            <div style="font-size: 12px; color: #666;">{{ doc.specialization }}</div>
+                    <div class="doctor-item">
+                        <div class="doc-icon">🩺</div>
+                        <div class="doc-info">
+                            <div class="doc-name">{{ doc.name }}</div>
+                            <div class="doc-spec">{{ doc.specialization }}</div>
                         </div>
-                        <span style="background: #e6f4ea; color: #137333; font-size: 12px; padding: 3px 8px; border-radius: 12px; font-weight: 500;">Available</span>
+                        <span class="badge badge-success">Available</span>
                     </div>
                     {% endfor %}
                 </div>
             {% else %}
-                <p style="color: #dc3545; font-size: 13px; margin: 10px 0;">No doctors currently available. Please reset hospital resources.</p>
-                <a href="{{ url_for('reset') }}" style="display: inline-block; padding: 8px 12px; background: #dc3545; color: white; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: bold;">Reset Resources Now</a>
+                <p class="error-msg">No doctors currently available. Please reset hospital resources.</p>
             {% endif %}
         </div>
     </div>
